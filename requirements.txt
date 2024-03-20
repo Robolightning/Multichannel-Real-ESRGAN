@@ -1,7 +1,7 @@
 patch_ng
-git+https://github.com/StableDraw/BasicSR
-git+https://github.com/StableDraw/facexlib
-git+https://github.com/StableDraw/GFPGAN
+basicsr @ git+https://git@github.com/StableDraw/BasicSR.git
+facexlib @ git+https://git@github.com/StableDraw/facexlib.git
+gfpgan @ git+https://git@github.com/StableDraw/GFPGAN.git
 numpy
 opencv-python
 Pillow

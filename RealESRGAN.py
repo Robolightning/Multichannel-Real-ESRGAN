@@ -62,7 +62,7 @@ def RealESRGAN_upscaler(binary_data, args):
         if "RestoreFormer" in args["version"]:
             gfpgan_model_name = "RestoreFormer.ckpt"
             arch = args["version"]
-            model_path = "RestoreFormer/weights/"
+            model_path = "weights/RestoreFormer/"
         else:
             gfpgan_model_list = ["GFPGANv1.pth", "GFPGANv1.3.pth", "GFPGANv1.4.pth"]
             gfpgan_model_name = "GFPGANCleanv1-NoCE-C2.pth"
@@ -70,8 +70,8 @@ def RealESRGAN_upscaler(binary_data, args):
                 if args["version"] in mn:
                     gfpgan_model_name = mn
             arch = "clean"
-            model_path = "gfpgan/weights/"
-        face_enhancer = GFPGANer(model_path = model_path + gfpgan_model_name, upscale = args["outscale"], arch = arch, channel_multiplier = 2, bg_upsampler = upsampler, input_is_latent = args["input_is_latent"])
+            model_path = "weights/gfpgan/"
+        face_enhancer = GFPGANer(model_path = model_path, model_name = gfpgan_model_name, upscale = args["outscale"], arch = arch, channel_multiplier = 2, bg_upsampler = upsampler, input_is_latent = args["input_is_latent"])
         img = cv2.cvtColor(np.array(Image.open(io.BytesIO(binary_data)).convert("RGB")), cv2.COLOR_RGB2BGR)
     else:
         img = cv2.cvtColor(np.array(Image.open(io.BytesIO(binary_data)).convert("RGBA")), cv2.COLOR_RGBA2BGRA)
@@ -87,29 +87,6 @@ def RealESRGAN_upscaler(binary_data, args):
         result_binary_data = im_buf_arr.tobytes()
     torch.cuda.empty_cache()
     return result_binary_data
-
-def get_img_type(i_name):
-    img = Image.open(tp + "test\\" + filename).convert("RGBA")
-    w, h = img.size
-    bl = False
-    wh = False
-    o_clr = 0
-    for i in range(w):
-        for j in range(h):
-            clr = img.getpixel((i, j))
-            if clr[3] == 255:
-                bl = True
-            elif clr[3] == 0:
-                wh = True
-            else:
-                if o_clr > 0:
-                    return (0)
-                o_clr += 1
-                th = clr
-    img.close()
-    if o_clr == 0:
-        return (bl, wh)
-    return (bl, wh, th)
 
 if __name__ == '__main__':
     params = {
