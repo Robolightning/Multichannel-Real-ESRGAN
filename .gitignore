@@ -7,6 +7,10 @@ wandb/*
 tmp/*
 weights/*
 
+# Weights
+*.pth
+*.ckpt
+
 version.py
 
 # Byte-compiled / optimized / DLL files
@@ -135,6 +139,3 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
-# Pyre type checker
-.pyre/

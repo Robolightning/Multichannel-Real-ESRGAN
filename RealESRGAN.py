@@ -5,12 +5,11 @@ import numpy as np
 import torch
 from PIL import Image
 from pytorch_lightning import seed_everything
-from edited_scripts.basicsr.archs.rrdbnet_arch import RRDBNet
-from edited_scripts.basicsr.utils.download_util import load_file_from_url
-from edited_scripts.realesrgan.utils import RealESRGANer
-from edited_scripts.realesrgan.archs.srvgg_arch import SRVGGNetCompact
-from edited_scripts.gfpgan.utils import GFPGANer
-from tqdm import tqdm
+from basicsr.archs.rrdbnet_arch import RRDBNet
+from basicsr.utils.download_util import load_file_from_url
+from realesrgan.utils import RealESRGANer
+from realesrgan.archs.srvgg_arch import SRVGGNetCompact
+from gfpgan.utils import GFPGANer
 
 def RealESRGAN_upscaler(binary_data, args):
     # определяет модели в соответствии с выбранной моделью
@@ -112,7 +111,6 @@ def get_img_type(i_name):
         return (bl, wh)
     return (bl, wh, th)
 
-'''
 if __name__ == '__main__':
     params = {
             "model": "realesr-animevideov3",    #Модель для обработки ("RealESRGAN_x4plus" - модель x4 RRDBNet, "RealESRNet_x4plus" - модель x4 RRDBNet, "RealESRGAN_x4plus_anime_6B" - модель x4 RRDBNet с 6 блоками, "RealESRGAN_x2plus" - модель x2 RRDBNet, "realesr-animevideov3" - модель x4 VGG-стиля (размера XS), "realesr-general-x4v3" - модель x4 VGG-стиля (размера S)) 
@@ -122,7 +120,7 @@ if __name__ == '__main__':
             "tile_pad": 10,                     #Заполнение плитки
             "pre_pad": 0,                       #Предварительный размер заполнения на каждой границе
             "face_enhance": True,               #Использовать GFPGAN улучшения лиц
-            "version": "RestoreFormer_GFPGAN",                   #Версия модели для улучшения лиц. Только если выбран "face_enhance: True. Возможне значения: "1.1", "1.2", "1.3", "1.4", "RestoreFormerGFPGAN", "RestoreFormer". Модель 1.1 тестовая, но способна колоризировать. Модель 1.2 обучена на большем количестве данных с предобработкой, не способна колоризировать, генерирует достаточно чёткие изображения с красивым магияжем, однако иногда результат генерации выглядит не натурально. Модель 1.3 основана на модели 1.2, генерирует более натурально выглядящие изображения, однако не такие чёткие, выдаёт лучие результаты на более низкокачественных изображениях, работает с относительно высококачественными изображениями, может иметь повторяющееся (дважды) восстановление. Модель 1.4 обеспечивает немного больше деталей и лучшую идентичность. Модель RestoreFormer создана специально для улучшения лиц, "RestoreFormer_GFPGAN" обеспечивает более чёткую, однако менее натуралистичную обработку и иногда создаёт артифакты.
+            "version": "RestoreFormer",         #Версия модели для улучшения лиц. Только если выбран "face_enhance: True. Возможне значения: "1.1", "1.2", "1.3", "1.4", "RestoreFormerGFPGAN", "RestoreFormer". Модель 1.1 тестовая, но способна колоризировать. Модель 1.2 обучена на большем количестве данных с предобработкой, не способна колоризировать, генерирует достаточно чёткие изображения с красивым магияжем, однако иногда результат генерации выглядит не натурально. Модель 1.3 основана на модели 1.2, генерирует более натурально выглядящие изображения, однако не такие чёткие, выдаёт лучие результаты на более низкокачественных изображениях, работает с относительно высококачественными изображениями, может иметь повторяющееся (дважды) восстановление. Модель 1.4 обеспечивает немного больше деталей и лучшую идентичность. Модель RestoreFormer создана специально для улучшения лиц, "RestoreFormer_GFPGAN" обеспечивает более чёткую, однако менее натуралистичную обработку и иногда создаёт артифакты.
             "input_is_latent": True,            #Скрытый ли вход. Только для Только если выбран "face_enhance: True и "version" от 1.1 до 1.4. Если выбран, то результат менее насыщенный и чёткий, но более наруральный
             "fp32": True,                       #Использовать точность fp32 во время вывода. По умолчанию fp16 (половинная точность)
             "alpha_upsampler": "realesrgan",    #Апсемплер для альфа-каналов. Варианты: "realesrgan" | "bicubic", Только для "face_enhance" == False
@@ -135,4 +133,3 @@ if __name__ == '__main__':
         init_img_binary_data = f.read()
     binary_data = RealESRGAN_upscaler(init_img_binary_data, params)
     Image.open(io.BytesIO(binary_data)).save("big.png")
-'''
